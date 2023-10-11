@@ -1,0 +1,14 @@
+using System;
+using System.Linq;
+ 
+public class Solution 
+{
+    public int[] solution(int start, int end_num) 
+    {
+        int[] answer = Enumerable.Range(end_num, start - end_num + 1).ToArray();
+        
+        Array.Reverse(answer);
+        
+        return answer;
+    }
+}
