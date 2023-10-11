@@ -1,1 +1,9 @@
-문자열을 정수로 변환하기
+using System;
+ 
+public class Solution 
+{
+    public int solution(string n_str) 
+    {
+        return int.Parse(n_str);
+    }
+}
