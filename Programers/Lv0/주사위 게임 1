@@ -1,0 +1,24 @@
+using System;
+ 
+public class Solution 
+{
+    public int solution(int a, int b) 
+    {
+        int score = 0;
+        
+        if (a % 2 != 0 && b % 2 != 0)
+        {
+            score = a * a + b * b;
+        }
+        else if (a % 2 != 0 || b % 2 != 0)
+        {
+            score = (a + b) * 2;
+        }
+        else
+        {
+            score = Math.Abs(a - b);
+        }
+        
+        return score;
+    }
+}
