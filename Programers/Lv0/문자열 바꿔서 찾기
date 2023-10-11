@@ -1,0 +1,23 @@
+using System;
+ 
+public class Solution 
+{
+    public int solution(string myString, string pat) 
+    {
+        string rs = "";
+        
+        for (int i = 0; i < myString.Length; i++)
+        {
+            if (myString[i] == 'A')
+            {
+                rs += "B";
+            }
+            else
+            {
+                rs += "A";
+            }
+        }
+        
+        return rs.Contains(pat) == true ? 1 : 0;
+    }
+}
