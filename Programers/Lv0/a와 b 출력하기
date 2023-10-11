@@ -1,0 +1,12 @@
+using System;
+ 
+public class Example
+{
+    public static void Main()
+    {
+        String[] s = Console.ReadLine().Split(' ');
+        
+        Console.WriteLine("a = " + s[0]);
+        Console.WriteLine("b = " + s[1]);
+    }
+}
