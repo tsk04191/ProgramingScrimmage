@@ -1,0 +1,30 @@
+using System;
+ 
+public class Solution 
+{
+    public int solution(int[] num_list) 
+    {
+        int mix = 1;
+        int sum = 0;
+        
+        for (int i = 0; i < num_list.Length; i++)
+        {
+            mix *= num_list[i];
+        }
+        
+        for (int i = 0; i < num_list.Length; i++)
+        {
+            sum += num_list[i];
+        }
+        
+        if (mix < (sum*sum))
+        {
+            return 1;
+        }
+        else 
+        {
+            return 0;
+            
+        }
+    }
+}
