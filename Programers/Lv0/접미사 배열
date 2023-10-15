@@ -1,0 +1,19 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public string[] solution(string my_string)
+    {
+        string[] r = new string[my_string.Length];
+        
+        for (int i = 1; i < r.Length; i++)
+        {
+            r[i] = my_string.Substring(my_string.Length - i);
+        }
+        
+        r[0] = my_string;
+        
+        return r.OrderBy(n => n).ToArray();
+    }
+}
