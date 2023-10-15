@@ -1,0 +1,39 @@
+using System;
+ 
+public class Solution
+{
+    public int[] solution(int l, int r)
+    {
+        string SumString = "";
+        for (int i = l; i < r + 1; i++)
+        {
+            string s = i.ToString();
+            string si = s.Replace("5", "").Replace("0", "");
+            if (si == "")
+            {
+                SumString += s + " ";
+            }
+        }
+        
+        string[] sumList = SumString.Split();
+        
+        if (SumString == "")
+        {
+            int[] re = new int[1];
+            re[0] = -1;
+            
+            return re;
+        }
+        else
+        {
+            int[] re = new int[sumList.Length - 1];
+            
+            for (int i = 0; i < sumList.Length - 1; i++)
+            {
+                re[i] = int.Parse(sumList[i]);
+            }
+            
+            return re;
+        }
+    }
+}
