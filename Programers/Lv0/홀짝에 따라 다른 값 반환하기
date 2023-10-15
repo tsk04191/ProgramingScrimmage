@@ -1,0 +1,10 @@
+using System;
+using System.Linq;
+ 
+public class Solution 
+{
+    public int solution(int n) 
+    {
+        return n % 2 == 0 ? Enumerable.Range(0, n + 1).Where(m => m % 2 == 0).Aggregate((a, b) => a + (int)Math.Pow(b, 2)) : Enumerable.Range(0, n + 1).Where(m => m % 2 != 0).Aggregate((a, b) => a + b);
+    }
+}
