@@ -1,0 +1,16 @@
+using System;
+ 
+public class Solution
+{
+    public int[] solution(int[] arr, int[,] queries)
+    {
+        for (int i = 0; i < queries.Length / 2; i++)
+        {
+            int instance = arr[queries[i, 0]];
+            arr[queries[i, 0]] = arr[queries[i, 1]];
+            arr[queries[i, 1]] = instance;
+        }
+        
+        return arr;
+    }
+}
