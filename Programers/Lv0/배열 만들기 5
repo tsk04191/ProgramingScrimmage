@@ -1,0 +1,10 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public int[] solution(string[] intStrs, int k, int s, int l)
+    {
+        return intStrs.Select(c => c.Substring(s, l)).Select(c => int.Parse(c)).Where(c => c > k).ToArray();
+    }
+}
