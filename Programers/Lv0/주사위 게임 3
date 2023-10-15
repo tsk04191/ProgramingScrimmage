@@ -1,0 +1,42 @@
+using System;
+using System.Linq;
+using System.Collections.Generic;
+ 
+public class Solution 
+{
+    public int solution(int a, int b, int c, int d) 
+    {
+        int score = 0;
+        List<int> count = new List<int>() { 0, 0, 0, 0, 0, 0 };
+        count[a - 1] += 1;
+        count[b - 1] += 1;
+        count[c - 1] += 1;
+        count[d - 1] += 1;
+        
+        if (count.Max() == 4)
+        {
+            score = (count.IndexOf(4) + 1) * 1111;
+        }
+        else if (count.Max() == 3)
+        {
+            score = (int)Math.Pow((count.IndexOf(3) + 1) * 10 + (count.IndexOf(1) + 1), 2);
+        }
+        else if (count.Max() == 2)
+        {
+            if (count.IndexOf(2) != count.LastIndexOf(2))
+            {
+                score = ((count.IndexOf(2) + 1) + (count.LastIndexOf(2) + 1)) * Math.Abs((count.IndexOf(2) + 1) - (count.LastIndexOf(2) + 1));
+            }
+            else
+            {
+                score = (count.IndexOf(1) + 1) * (count.LastIndexOf(1) + 1);
+            }
+        }
+        else
+        {
+            score = count.IndexOf(1) + 1;
+        }
+        
+        return score;
+    }
+}
