@@ -1,0 +1,13 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public string solution(string my_string, int s, int e)
+    {
+        string ins = new string(my_string.Substring(s, e - s + 1).Reverse().ToArray());
+        my_string = my_string.Substring(0, s) + ins + my_string.Substring(e + 1);
+        
+        return my_string;
+    }
+}
