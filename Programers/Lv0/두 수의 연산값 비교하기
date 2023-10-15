@@ -1,0 +1,9 @@
+using System;
+ 
+public class Solution 
+{
+    public int solution(int a, int b)
+    {
+        return (int.Parse(a.ToString() + b.ToString()) < 2 * a * b) ? 2 * a * b : int.Parse(a.ToString() + b.ToString());
+    }
+}
