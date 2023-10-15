@@ -1,0 +1,17 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public int[] solution(int[] arr, int[,] queries)
+    {
+        int[] r = new int[queries.GetLength(0)];
+        
+        for (int i = 0; i < r.Length; i++)
+        {
+            r[i] = arr.Skip(queries[i, 0]).Take(queries[i, 1] - queries[i, 0] + 1).Where(n => n > queries[i, 2]).DefaultIfEmpty(-1).Min();
+        }
+        
+        return r;
+    }
+}
