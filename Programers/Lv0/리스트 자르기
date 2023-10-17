@@ -1,0 +1,34 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+ 
+public class Solution
+{
+    public int[] solution(int n, int[] slicer, int[] num_list)
+    {
+        List<int> r = new List<int>();
+        
+        for (int i = 0; i < num_list.Length; i++)
+        {
+            if (n == 1 && i <= slicer[1])
+            {
+                r.Add(num_list[i]);
+            }
+            else if (n == 2 && i >= slicer[0])
+            {
+                r.Add(num_list[i]);
+            }
+            else if (n == 3 && i <= slicer[1] && i >= slicer[0])
+            {
+                r.Add(num_list[i]);
+            }
+            else if (n == 4 && i <= slicer[1] && i >= slicer[0])
+            {
+                r.Add(num_list[i]);
+                i += slicer[2] - 1;
+            }
+        }
+        
+        return r.ToArray();
+    }
+}
