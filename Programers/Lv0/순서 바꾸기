@@ -1,0 +1,23 @@
+using System;
+ 
+public class Solution
+{
+    public int[] solution(int[] num_list, int n)
+    {
+        int[] r = new int[num_list.Length];
+        int j = n;
+        
+        for (int i = 0; i < num_list.Length; i++)
+        {
+            if (j == num_list.Length)
+            {
+                j = 0;
+            }
+            
+            r[i] = num_list[j];
+            j++;
+        }
+        
+        return r;
+    }
+}
