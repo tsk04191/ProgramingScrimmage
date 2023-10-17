@@ -1,0 +1,22 @@
+using System;
+ 
+public class Solution
+{
+    public int solution(int[] num_list)
+    {
+        int s = 0, d = 0;
+        for(int i = 0; i < num_list.Length; i++)
+        {
+            if ((i + 1) % 2 != 0)
+            {
+                s += num_list[i];
+            }
+            else
+            {
+                d += num_list[i];
+            }
+        }
+        
+        return s > d ? s : d;
+    }
+}
