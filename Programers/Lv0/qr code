@@ -1,0 +1,16 @@
+using System;
+ 
+public class Solution 
+{
+    public string solution(int q, int r, string code) 
+    {
+        string c = "";
+        
+        for (int i = r; i < code.Length; i += q)
+        {
+            c += code[i].ToString();
+        }
+        
+        return c;
+    }
+}
