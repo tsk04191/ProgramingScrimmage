@@ -1,0 +1,33 @@
+using System;
+using System.Collections.Generic;
+ 
+public class Solution
+{
+    public int[] solution(int[] arr)
+    {
+        List<int> r = new List<int>();
+        
+        for (int i = 0; i < arr.Length; i++)
+        {
+            if (r.Count == 0)
+            {
+                r.Add(arr[i]);
+            }
+            else if (r[r.Count - 1] == arr[i])
+            {
+                r.RemoveAt(r.Count - 1);
+            }
+            else if (r[r.Count - 1] != arr[i])
+            {
+                r.Add(arr[i]);
+            }
+        }
+        
+        if (r.Count == 0)
+        {
+            r.Add(-1);
+        }
+        
+        return r.ToArray();
+    }
+}
