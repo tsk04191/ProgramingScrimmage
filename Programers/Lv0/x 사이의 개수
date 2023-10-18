@@ -1,0 +1,17 @@
+using System;
+ 
+public class Solution
+{
+    public int[] solution(string myString)
+    {
+        string[] input = myString.Split("x");
+        int[] l = new int[input.Length];
+        
+        for (int i = 0; i < l.Length; i++)
+        {
+            l[i] = input[i].Length;
+        }
+        
+        return l;
+    }
+}
