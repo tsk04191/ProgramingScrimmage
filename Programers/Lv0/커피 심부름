@@ -1,0 +1,16 @@
+using System;
+ 
+public class Solution
+{
+    public int solution(string[] order)
+    {
+        int sum = 0;
+        
+        for (int i = 0; i < order.Length; i++)
+        {
+            sum += order[i].Replace("iceamericano", "americano").Replace("americanoice", "americano").Replace("hotamericano", "americano").Replace("americanohot", "americano").Replace("icecafelatte", "cafelatte").Replace("cafelatteice", "cafelatte").Replace("hotcafelatte", "cafelatte").Replace("cafelattehot", "cafelatte").Replace("anything", "americano") == "americano" ? 4500 : 5000;
+        }
+        
+        return sum;
+    }
+}
