@@ -1,0 +1,21 @@
+using System;
+ 
+public class Solution
+{
+    public int solution(string binomial)
+    {
+        string[] input = binomial.Split(" ");
+        
+        switch(input[1])
+        {
+            case "+":
+                return int.Parse(input[0]) + int.Parse(input[2]);
+            case "-":
+                return int.Parse(input[0]) - int.Parse(input[2]);
+            case "*":
+                return int.Parse(input[0]) * int.Parse(input[2]);
+            default:
+                return 0;
+        }
+    }
+}
