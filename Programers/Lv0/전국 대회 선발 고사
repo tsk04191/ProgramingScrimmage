@@ -1,0 +1,20 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public int solution(int[] rank, bool[] attendance)
+    {
+        for (int i = 0; i < rank.Length; i++)
+        {
+            if (!attendance[i])
+            {
+                rank[i] = -1;
+            }
+        }
+        
+        int[] alist = rank.Where(i => i != -1).OrderBy(i => i).ToArray();
+        
+        return Array.IndexOf(rank, alist[0]) * 10000 + Array.IndexOf(rank, alist[1]) * 100 + Array.IndexOf(rank, alist[2]);
+    }
+}
