@@ -1,0 +1,9 @@
+using System;
+ 
+public class Solution
+{
+    public string solution(string myString)
+    {
+        return myString.Replace("a", "l").Replace("b", "l").Replace("c", "l").Replace("d", "l").Replace("e", "l").Replace("f", "l").Replace("g", "l").Replace("h", "l").Replace("i", "l").Replace("j", "l").Replace("k", "l");
+    }
+}
