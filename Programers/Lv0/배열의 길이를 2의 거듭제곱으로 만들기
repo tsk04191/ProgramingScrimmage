@@ -1,0 +1,18 @@
+using System;
+ 
+public class Solution
+{
+    public int[] solution(int[] arr)
+    {
+        int l = 1;
+        
+        while (l < arr.Length)
+        {
+            l *= 2;
+        }
+        
+        Array.Resize(ref arr, l);
+        
+        return arr;
+    }
+}
