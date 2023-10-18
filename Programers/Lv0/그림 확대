@@ -1,0 +1,29 @@
+using System;
+using System.Collections.Generic;
+ 
+public class Solution
+{
+    public string[] solution(string[] picture, int k)
+    {
+        List<string> r = new List<string>();
+        
+        for (int i = 0; i < picture.Length; i++)
+        {
+            string instance = "";
+            for (int j = 0; j < picture[i].Length; j++)
+            {
+                for (int l = 0; l < k; l++)
+                {
+                    instance += picture[i][j].ToString();
+                }
+            }
+            
+            for (int j = 0; j < k; j++)
+            {
+                r.Add(instance);
+            }
+        }
+        
+        return r.ToArray();
+    }
+}
