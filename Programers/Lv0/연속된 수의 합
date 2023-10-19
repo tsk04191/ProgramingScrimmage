@@ -1,0 +1,22 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public int[] solution(int num, int total)
+    {
+        int[] list = new int[] {};
+        if (num % 2 != 0)
+        {
+            int mid = total / num;
+            list = Enumerable.Range(mid - (num / 2), num).ToArray();
+        }
+        else
+        {
+            float mid = total / num;
+            list = Enumerable.Range((int)(mid - (num / 2)) + 1, num).ToArray();
+        }
+        
+        return list;
+    }
+}
