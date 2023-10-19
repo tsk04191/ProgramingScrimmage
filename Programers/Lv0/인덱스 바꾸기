@@ -1,0 +1,15 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public string solution(string my_string, int num1, int num2)
+    {
+        char[] clist = my_string.ToArray();
+        char instance = clist[num1];
+        clist[num1] = clist[num2];
+        clist[num2] = instance;
+        
+        return new string(clist);
+    }
+}
