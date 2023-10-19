@@ -1,0 +1,25 @@
+using System;
+ 
+public class Solution
+{
+    public string solution(string s)
+    {
+        string r = "";
+        int[] c = new int[26];
+        
+        for (int i = 0; i < s.Length; i++)
+        {
+            c[s[i] - 'a'] += 1;
+        }
+        
+        for (int i = 0; i < 26; i++)
+        {
+            if (c[i] == 1)
+            {
+                r += ((char)(i + 'a')).ToString();
+            }
+        }
+        
+        return r;
+    }
+}
