@@ -1,0 +1,10 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public int solution(int n)
+    {
+        return n.ToString().Select(i => int.Parse(i.ToString())).ToArray().Sum();
+    }
+}
