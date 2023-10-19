@@ -1,0 +1,11 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public string solution(string my_string)
+    {
+        char[] r = my_string.ToLower().OrderBy(c => c).ToArray();
+        return new string(r);
+    }
+}
