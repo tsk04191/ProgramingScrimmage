@@ -1,0 +1,28 @@
+using System;
+ 
+public class Solution
+{
+    public string[] solution(string[] quiz)
+    {
+        string[] r = new string[quiz.Length];
+        
+        for (int i = 0; i < quiz.Length; i++)
+        {
+            string[] check = quiz[i].Split(' ');
+            int a = int.Parse(check[0]), b = int.Parse(check[2]), c = int.Parse(check[4]);
+            string type = check[1];
+            
+            switch (type)
+            {
+                case "+":
+                    r[i] = a + b == c ? "O" : "X";
+                    break;
+                case "-":
+                    r[i] = a - b == c ? "O" : "X";
+                    break;
+            }
+        }
+        
+        return r;
+    }
+}
