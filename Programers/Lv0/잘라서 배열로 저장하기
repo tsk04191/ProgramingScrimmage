@@ -1,0 +1,17 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public string[] solution(string my_str, int n)
+    {
+        int t = my_str.Length % n != 0 ? my_str.Length / n + 1 : my_str.Length / n;
+        
+        for (int i = 1; i < t; i++)
+        {
+            my_str = my_str.Insert((i * n) + (i - 1), ",");
+        }
+        
+        return my_str.Split(",");
+    }
+}
