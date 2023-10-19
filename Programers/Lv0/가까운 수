@@ -1,0 +1,16 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public int solution(int[] array, int n)
+    {
+        int[] gap = array.Select(i => Math.Abs(i - n)).ToArray();
+        
+        int MinGap = gap.Min();
+        int targetA = Array.IndexOf(gap, MinGap);
+        int targetB = Array.LastIndexOf(gap, MinGap);
+        
+        return targetA == targetB ? array[targetA] : array[targetA] > array[targetB] ? array[targetB] : array[targetA];
+    }
+}
