@@ -1,0 +1,16 @@
+using System;
+ 
+public class Solution
+{
+    public string solution(string cipher, int code)
+    {
+        string r = "";
+        
+        for (int i= code - 1; i < cipher.Length; i += code)
+        {
+            r += cipher[i];
+        }
+        
+        return r;
+    }
+}
