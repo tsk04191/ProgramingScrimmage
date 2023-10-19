@@ -1,0 +1,40 @@
+using System;
+using System.Collections.Generic;
+ 
+public class Solution
+{
+    public int solution(string my_string)
+    {
+        int r = 0;
+        string[] input = my_string.Split();
+        List<int> values = new List<int>();
+        List<string> type = new List<string>();
+        
+        for (int i = 0; i < input.Length; i++)
+        {
+            if (i % 2 == 0)
+            {
+                values.Add(int.Parse(input[i]));
+            }
+            else
+            {
+                type.Add(input[i]);
+            }
+        }
+        
+        r = values[0];
+        for (int i = 0; i < type.Count; i++)
+        {
+            if (type[i] == "+")
+            {
+                r += values[i + 1];
+            }
+            else
+            {
+                r -= values[i + 1];
+            }
+        }
+        
+        return r;
+    }
+}
