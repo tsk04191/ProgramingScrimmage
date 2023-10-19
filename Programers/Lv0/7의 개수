@@ -1,0 +1,17 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public int solution(int[] array)
+    {
+        int r = 0;
+        
+        for (int i = 0; i < array.Length; i++)
+        {
+            r += array[i].ToString().Count(c => (c == '7'));
+        }
+        
+        return r;
+    }
+}
