@@ -1,0 +1,9 @@
+using System;
+ 
+public class Solution
+{
+    public string solution(string rsp)
+    {
+        return rsp.Replace("2", "s").Replace("0", "r").Replace("5", "p").Replace("s", "0").Replace("r", "5").Replace("p", "2");
+    }
+}
