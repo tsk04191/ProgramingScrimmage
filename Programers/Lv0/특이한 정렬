@@ -1,0 +1,21 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public int[] solution(int[] numlist, int n)
+    {
+        Array.Sort(numlist, (a, b) => {
+            int diffA = Math.Abs(a - n);
+            int diffB = Math.Abs(b - n);
+    
+            if (diffA == diffB) {
+                return b.CompareTo(a);
+            }
+    
+            return diffA.CompareTo(diffB);
+        });
+ 
+        return numlist;
+    }
+}
