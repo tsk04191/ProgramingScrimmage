@@ -1,0 +1,10 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public int solution(string before, string after)
+    {
+        return new string(before.OrderBy(c => c).ToArray()) == new string(after.OrderBy(c => c).ToArray()) ? 1 : 0;
+    }
+}
