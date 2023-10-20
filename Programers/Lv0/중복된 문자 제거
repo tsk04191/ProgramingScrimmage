@@ -1,0 +1,45 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public string solution(string my_string)
+    {
+        string r = "";
+        int[] stack = new int[53];
+        
+        for (int i = 0; i < my_string.Length; i++)
+        {
+            if (my_string[i] == ' ')
+            {
+                if (stack[52] == 0)
+                {
+                    stack[52]++;
+                    r += my_string[i];
+                }
+            }
+            else if (my_string[i] >= 'a' && my_string[i] <= 'z')
+            {
+                int j = my_string[i] - 'a';
+                
+                if (stack[j] == 0)
+                {
+                    stack[j]++;
+                    r += my_string[i];
+                }
+            }
+            else if (my_string[i] >= 'A' && my_string[i] <= 'Z')
+            {
+                int j = my_string[i] - 'A' + 26;
+                
+                if (stack[j] == 0)
+                {
+                    stack[j]++;
+                    r += my_string[i];
+                }
+            }
+        }
+        
+        return r;
+    }
+}
