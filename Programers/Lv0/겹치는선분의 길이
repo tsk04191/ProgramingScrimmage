@@ -1,0 +1,29 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public int solution(int[,] lines)
+    {
+        int max = int.MinValue;
+        int min = int.MaxValue;
+ 
+        for (int i = 0; i < lines.GetLength(0); i++)
+        {
+            max = Math.Max(max, lines[i, 1]);
+            min = Math.Min(min, lines[i, 0]);
+        }
+ 
+        int[] counts = new int[max - min + 1];
+ 
+        for (int i = 0; i < lines.GetLength(0); i++)
+        {
+            for (int j = lines[i, 0]; j < lines[i, 1]; j++)
+            {
+                counts[j - min]++;
+            }
+        }
+        
+        return counts.Count(count => count > 1);
+    }
+}
