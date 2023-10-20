@@ -1,0 +1,30 @@
+using System;
+ 
+public class Solution
+{
+    public int[] solution(string[] keyinput, int[] board)
+    {
+        int[] player = { 0, 0 };
+        
+        for (int i = 0; i < keyinput.Length; i++)
+        {
+            switch (keyinput[i])
+            {
+                case "up":
+                    player[1] = (player[1] + 1) > (board[1] / 2) ? player[1] : player[1] + 1;
+                    break;
+                case "down":
+                    player[1] = (player[1] - 1) < (-board[1] / 2) ? player[1] : player[1] - 1;
+                    break;
+                case "left":
+                    player[0] = (player[0] - 1) < (-board[0] / 2) ? player[0] : player[0] - 1;
+                    break;
+                case "right":
+                    player[0] = (player[0] + 1) > (board[0] / 2) ? player[0] : player[0] + 1;
+                    break;
+            }
+        }
+        
+        return player;
+    }
+}
