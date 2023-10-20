@@ -1,0 +1,12 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public int solution(string my_string)
+    {
+        string[] i = new string(my_string.Select(c => (c < 58) ? c : ' ').ToArray()).Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        int[] nums = i.Select(int.Parse).ToArray();
+        return nums.Sum();
+    }
+}
