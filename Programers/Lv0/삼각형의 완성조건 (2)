@@ -1,0 +1,13 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public int solution(int[] sides)
+    {
+        int max = sides.Sum() - 1 - sides.Max();
+        int min = sides.Min();
+        
+        return max + min;
+    }
+}
