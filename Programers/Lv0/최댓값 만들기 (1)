@@ -1,0 +1,13 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public int solution(int[] numbers)
+    {
+        numbers = numbers.OrderByDescending(i => i).ToArray();
+        int maxA = numbers[0], maxB = numbers[1];
+        
+        return maxA * maxB;
+    }
+}
