@@ -1,0 +1,10 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public int solution(int i, int j, int k)
+    {
+        return Enumerable.Range(i, j - i + 1).Select(n => n.ToString().Count(c => (c.ToString() == k.ToString()))).Sum();
+    }
+}
