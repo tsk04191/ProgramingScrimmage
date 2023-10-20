@@ -1,0 +1,77 @@
+using System;
+ 
+public class Solution
+{
+    public int solution(int[,] board)
+    {
+        int[,] check = SetBoom(board);
+        check = CheckDanger(check);
+        board = SetBoard(check);
+        
+        return CheckSafe(board);
+    }
+    
+    public int[,] SetBoom(int[,] board)
+    {
+        int[,] check = new int[board.GetLength(0) + 2, board.GetLength(1) + 2];
+        
+        for(int i = 0; i < board.GetLength(0); i++)
+        {
+            for(int j = 0; j < board.GetLength(1); j++)
+            {
+                check[i + 1, j + 1] = board[i, j];
+            }
+        }
+        
+        return check;
+    }
+    
+    public int[,] CheckDanger(int[,] check)
+    {
+        for(int i = 1; i < check.GetLength(0) - 1; i++)
+        {
+            for(int j = 1; j < check.GetLength(1) - 1; j++)
+            {
+                if (check[i, j] == 0 && (check[i - 1, j - 1] == 1 || check[i, j - 1] == 1 || check[i + 1, j - 1] == 1 || check[i - 1, j] == 1 || check[i + 1, j] == 1 || check[i - 1, j + 1] == 1 || check[i, j + 1] == 1 || check[i + 1, j + 1] == 1))
+                {
+                    check[i, j] = -1;
+                }
+            }
+        }
+        
+        return check;
+    }
+    
+    public int[,] SetBoard(int[,] check)
+    {
+        int[,] board = new int[check.GetLength(0) - 2, check.GetLength(1) - 2];
+        
+        for(int i = 0; i < board.GetLength(0); i++)
+        {
+            for(int j = 0; j < board.GetLength(1); j++)
+            {
+                board[i, j] = check[i + 1, j + 1];
+            }
+        }
+        
+        return board;
+    }
+    
+    public int CheckSafe(int[,] board)
+    {
+        int count = 0;
+        
+        for(int i = 0; i < board.GetLength(0); i++)
+        {
+            for(int j = 0; j < board.GetLength(1); j++)
+            {
+                if (board[i, j] == 0)
+                {
+                    count++;
+                }
+            }
+        }
+        
+        return count;
+    }
+}
