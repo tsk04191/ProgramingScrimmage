@@ -1,0 +1,10 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public int[] solution(string my_string)
+    {
+        return my_string.Where(c => c < 58).Select(c => int.Parse(c.ToString())).OrderBy(i => i).ToArray();
+    }
+}
