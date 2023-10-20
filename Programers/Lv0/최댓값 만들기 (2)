@@ -1,0 +1,22 @@
+using System;
+ 
+public class Solution
+{
+    public int solution(int[] numbers)
+    {
+        int max = int.MinValue;
+        
+        for (int i = 0; i < numbers.Length; i++)
+        {
+            for (int j = 0; j < numbers.Length; j++)
+            {
+                if (i != j)
+                {
+                    max = Math.Max(max, numbers[i] * numbers[j]);
+                }
+            }
+        }
+        
+        return max;
+    }
+}
