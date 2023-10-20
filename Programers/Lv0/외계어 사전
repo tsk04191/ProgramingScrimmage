@@ -1,0 +1,31 @@
+using System;
+ 
+public class Solution
+{
+    public int solution(string[] spell, string[] dic)
+    {
+        for (int i = 0; i < dic.Length; i++)
+        {
+            string t = dic[i];
+            
+            for (int j = 0; j < spell.Length; j++)
+            {
+                if (dic[i].Contains(spell[j]))
+                {
+                    t = t.Replace(spell[j], "");
+                }
+                else
+                {
+                    t += "0";
+                }
+            }
+            
+            if (t == "")
+            {
+                return 1;
+            }
+        }
+        
+        return 2;
+    }
+}
