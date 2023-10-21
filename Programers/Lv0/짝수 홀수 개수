@@ -1,0 +1,10 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public int[] solution(int[] num_list)
+    {
+        return new int[] { num_list.Count(i => i % 2 == 0), num_list.Count(i => i % 2 != 0) };
+    }
+}
