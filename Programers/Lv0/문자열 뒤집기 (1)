@@ -1,0 +1,11 @@
+using System;
+ 
+public class Solution
+{
+    public string solution(string my_string)
+    {
+        char[] c = my_string.ToCharArray();
+        Array.Reverse(c);
+        return new string(c);
+    }
+}
