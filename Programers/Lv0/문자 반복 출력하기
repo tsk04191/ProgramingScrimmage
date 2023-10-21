@@ -1,0 +1,22 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public string solution(string my_string, int n)
+    {
+        return PullingString(my_string, n);
+    }
+    
+    public string PullingString(string s, int t)
+    {
+        string r = "";
+        
+        for (int i = 0; i < s.Length; i++)
+        {
+            r += new string(Enumerable.Repeat(s[i], t).ToArray());
+        }
+        
+        return r;
+    }
+}
