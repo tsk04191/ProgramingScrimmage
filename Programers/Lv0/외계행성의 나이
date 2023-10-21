@@ -1,0 +1,10 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public string solution(int age)
+    {
+        return new string(age.ToString().Select(c => (char)(int.Parse(c.ToString()) + 97)).ToArray());
+    }
+}
