@@ -1,0 +1,21 @@
+using System;
+ 
+public class Solution
+{
+    public int solution(int n)
+    {
+        return n / gcd(n, 6);
+    }
+    
+    public int gcd(int n, int m)
+    {
+        if ( m == 0 )
+        {
+            return n;
+        }
+        else
+        {
+            return gcd(m, n % m);
+        }
+    }
+}
