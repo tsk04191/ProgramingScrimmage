@@ -1,0 +1,25 @@
+using System;
+ 
+public class Solution
+{
+    public int[] solution(int numer1, int denom1, int numer2, int denom2)
+    {
+        int head = numer1 * denom2 + numer2 * denom1;
+        int mom = denom1 * denom2;
+        int gcdnum = gcd(head, mom);
+        
+        return new int[] { head / gcdnum , mom / gcdnum };
+    }
+    
+    public int gcd(int n, int m)
+    {
+        if ( m == 0 )
+        {
+            return n;
+        }
+        else
+        {
+            return gcd(m, n % m);
+        }
+    }
+}
