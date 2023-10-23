@@ -1,0 +1,17 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public int solution(int[] array)
+    {
+        int[] record = new int[1000];
+        
+        for (int i = 0; i < array.Length; i++)
+        {
+            record[array[i]] += 1;
+        }
+        
+        return Array.IndexOf(record, record.Max()) == Array.LastIndexOf(record, record.Max()) ? Array.IndexOf(record, record.Max()) : -1;
+    }
+}
