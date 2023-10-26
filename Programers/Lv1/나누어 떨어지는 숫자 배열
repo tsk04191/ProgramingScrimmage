@@ -1,0 +1,11 @@
+using System.Linq;
+ 
+public class Solution
+{
+    public int[] solution(int[] arr, int divisor)
+    {
+        int[] r = { -1 };
+        arr = arr.Where(i => i % divisor == 0).OrderBy(i => i).ToArray();
+        return arr.Length != 0 ? arr : r;
+    }
+}
