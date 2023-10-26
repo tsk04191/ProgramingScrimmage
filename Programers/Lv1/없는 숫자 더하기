@@ -1,0 +1,19 @@
+using System;
+ 
+public class Solution
+{
+    public int solution(int[] numbers)
+    {
+        int sum = 0;
+        
+        for (int i = 1; i <= 9; i++)
+        {
+            if (Array.IndexOf(numbers, i) == -1)
+            {
+                sum += i;
+            }
+        }
+        
+        return sum;
+    }
+}
