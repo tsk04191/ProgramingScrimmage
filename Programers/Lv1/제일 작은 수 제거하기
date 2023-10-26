@@ -1,0 +1,17 @@
+using System.Linq;
+ 
+public class Solution
+{
+    public int[] solution(int[] arr)
+    {
+        int min = arr.Min();
+        arr = arr.Where(i => i != min).ToArray();
+        
+        if (arr.Length == 0)
+        {
+            arr = Enumerable.Repeat(-1, 1).ToArray();
+        }
+        
+        return arr;
+    }
+}
