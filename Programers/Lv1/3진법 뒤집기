@@ -1,0 +1,28 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public int solution(int n)
+    {
+        int pow = 1, sum = 0;
+        string Trd = "";
+        
+        while (n > 0)
+        {
+            Trd = (n % 3).ToString() + Trd;
+            n /= 3;
+        }
+        
+        string rTrd = new string(Trd.Reverse().ToArray());
+        
+        for (int i = 0; i < rTrd.Length; i++)
+        {
+            pow = (int)Math.Pow(3, rTrd.Length - i - 1);
+        
+            sum += int.Parse(rTrd[i].ToString()) * pow;
+        }
+        
+        return sum;
+    }
+}
