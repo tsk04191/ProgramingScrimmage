@@ -1,0 +1,15 @@
+using System;
+ 
+public class Example
+{
+    public static void Main()
+    {
+        String[] s = Console.ReadLine().Split(' ');
+        int t = int.Parse(s[0]), line = int.Parse(s[1]);
+        
+        for (int i = 0; i < line; i++)
+        {
+            Console.WriteLine(new string('*', t));
+        }
+    }
+}
