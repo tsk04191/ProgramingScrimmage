@@ -1,0 +1,21 @@
+public class Solution
+{
+    public int[] solution(int n, int m)
+    {
+        int[] r = { gcd(n, m), n * m / gcd(n, m) };
+        
+        return r;
+    }
+    
+    public int gcd(int n, int m)
+    {
+        if (m == 0)
+        {
+            return n;
+        }
+        else
+        {
+            return gcd(m, n % m);
+        }
+    }
+}
