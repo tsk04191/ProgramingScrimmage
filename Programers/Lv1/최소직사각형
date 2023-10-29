@@ -1,0 +1,22 @@
+using System;
+ 
+public class Solution
+{
+    public int solution(int[,] sizes)
+    {
+        int[] x = new int[sizes.GetLength(0)], y = new int[sizes.GetLength(0)];
+        
+        for (int i = 0; i < sizes.GetLength(0); i++)
+        {
+            x[i] = Math.Max(sizes[i, 0], sizes[i, 1]);
+            y[i] = Math.Min(sizes[i, 0], sizes[i, 1]);
+        }
+        
+        Array.Sort(x);
+        Array.Reverse(x);
+        Array.Sort(y);
+        Array.Reverse(y);
+        
+        return x[0] * y[0];
+    }
+}
