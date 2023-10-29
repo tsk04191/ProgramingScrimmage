@@ -1,0 +1,38 @@
+using System;
+ 
+class Solution
+{
+    public int solution(int[] nums)
+    {
+        int count = 0;
+        
+        for (int i = 0; i < nums.Length; i++)
+        {
+            for (int j = i + 1; j < nums.Length; j++)
+            {
+                for (int l = j + 1; l < nums.Length; l++)
+                {
+                    if (CheckNum(nums[i] + nums[j] + nums[l]))
+                    {
+                        count++;
+                    }
+                }
+            }
+        }
+        
+        return count;
+    }
+    
+    public bool CheckNum(int n)
+    {
+        for (int i = 2; i < n; i++)
+        {
+            if (n % i == 0)
+            {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+}
