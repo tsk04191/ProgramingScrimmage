@@ -1,0 +1,22 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public int[] solution(string s)
+    {
+        int[] solve = Enumerable.Repeat(-1, s.Length).ToArray();
+        
+        for (int i = 1; i < s.Length; i++)
+        {
+            string instance = s.Substring(0, i);
+            
+            if (instance.LastIndexOf(s[i]) != -1)
+            {
+                solve[i] = instance.Length - instance.LastIndexOf(s[i]);
+            }
+        }
+        
+        return solve;
+    }
+}
