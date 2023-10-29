@@ -1,0 +1,18 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public int[] solution(int k, int[] score)
+    {
+        int[] Alet = new int[score.Length];
+        
+        for (int i = 0; i < score.Length; i++)
+        {
+            int[] instance = score.Take(i + 1).OrderBy(n => n).Skip(i + 1 - k).ToArray();
+            Alet[i] = instance.Min();
+        }
+        
+        return Alet;
+    }
+}
