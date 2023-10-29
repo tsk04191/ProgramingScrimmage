@@ -1,0 +1,23 @@
+using System;
+using System.Linq;
+ 
+public class Solution
+{
+    public int[] solution(int[] array, int[,] commands)
+    {
+        int[] r = new int[commands.GetLength(0)];
+        
+        for (int i = 0; i < commands.GetLength(0); i++)
+        {
+            r[i] = RunCommand(array, commands[i, 0], commands[i, 1], commands[i, 2]);
+        }
+        
+        return r;
+    }
+    
+    public int RunCommand(int[] array, int i, int j, int k)
+    {
+        return array.Skip(i - 1).Take(j - i + 1).OrderBy(n => n).ToArray()[k - 1];
+        return 0;
+    }
+}
