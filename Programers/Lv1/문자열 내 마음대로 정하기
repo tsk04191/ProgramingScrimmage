@@ -1,0 +1,31 @@
+using System;
+ 
+public class Solution
+{
+    public string[] solution(string[] strings, int n)
+    {
+        for (int i = 0; i < strings.Length; i++)
+        {
+            strings[i] = MoveNum(strings[i], n);
+        }
+        
+        Array.Sort(strings);
+        
+        for (int i = 0; i < strings.Length; i++)
+        {
+            strings[i] = ReturnNum(strings[i], n);
+        }
+        
+        return strings;
+    }
+    
+    public string MoveNum(string s, int n)
+    {
+        return s[n].ToString() + s.Substring(0, n) + s.Substring(n + 1);
+    }
+    
+    public string ReturnNum(string s, int n)
+    {
+        return s.Substring(1, n) + s[0].ToString() + s.Substring(n + 1);
+    }
+}
