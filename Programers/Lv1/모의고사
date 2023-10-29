@@ -1,0 +1,58 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+ 
+public class Solution
+{
+    public int[] solution(int[] answers)
+    {
+        int[] manA = { 1, 2, 3, 4, 5 };
+        int[] manB = { 2, 1, 2, 3, 2, 4, 2, 5 };
+        int[] manC = { 3, 3, 1, 1, 2, 2, 4, 4, 5, 5 };
+        int[] score = { 0, 0, 0 };
+        int countA = 0, countB = 0, countC = 0;
+        List<int> First = new List<int>();
+        
+        for (int i = 0; i < answers.Length; i++)
+        {
+            if (manA[countA] == answers[i])
+            {
+                score[0]++;
+            }
+            if (manB[countB] == answers[i])
+            {
+                score[1]++;
+            }
+            if (manC[countC] == answers[i])
+            {
+                score[2]++;
+            }
+            countA++;
+            countB++;
+            countC++;
+            
+            if (countA >= manA.Length)
+            {
+                countA = 0;
+            }
+            if (countB >= manB.Length)
+            {
+                countB = 0;
+            }
+            if (countC >= manC.Length)
+            {
+                countC = 0;
+            }
+        }
+        
+        for (int i = 0; i < score.Length; i++)
+        {
+            if (score[i] == score.Max())
+            {
+                First.Add(i + 1);
+            }
+        }
+        
+        return First.ToArray();
+    }
+}
