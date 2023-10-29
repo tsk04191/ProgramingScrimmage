@@ -1,0 +1,19 @@
+public class Solution
+{
+    public int solution(int a, int b, int n)
+    {
+        int count = 0;
+        int leftBottle = 0;
+ 
+        while (n >= a)
+        {
+            int usedBottles = n / a;
+            count += usedBottles * b;
+ 
+            leftBottle = n % a;
+            n = usedBottles * b + leftBottle;
+        }
+ 
+        return count;
+    }
+}
