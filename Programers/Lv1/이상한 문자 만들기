@@ -1,0 +1,31 @@
+using System;
+ 
+public class Solution
+{
+    public string solution(string s)
+    {
+        string r = "";
+        bool b = true;
+        
+        for (int i = 0; i < s.Length; i++)
+        {
+            if (s[i] == ' ')
+            {
+                r += " ";
+                b = true;
+            }
+            else if (b)
+            {
+                r += s[i].ToString().ToUpper();
+                b = !b;
+            }
+            else
+            {
+                r += s[i].ToString().ToLower();
+                b = !b;
+            }
+        }
+        
+        return r;
+    }
+}
