@@ -1,0 +1,41 @@
+while(true)
+{
+    string[] input = Console.ReadLine().Split();
+    int ALine = int.Parse(input[0]), BLine = int.Parse(input[1]), CLine = int.Parse(input[2]);
+    int MaxLine = Math.Max(Math.Max(ALine, BLine), CLine);
+
+    if (MaxLine == ALine)
+    {
+        MaxLine -= BLine + CLine;
+    }
+    else if (MaxLine == BLine)
+    {
+        MaxLine -= ALine + CLine;
+    }
+    else if (MaxLine == CLine)
+    {
+        MaxLine -= ALine + BLine;
+    }
+
+    if (ALine == BLine && ALine == CLine)
+    {
+        if (ALine == 0)
+        {
+            break;
+        }
+
+        Console.WriteLine("Equilateral");
+    }
+    else if (MaxLine >= 0)
+    {
+        Console.WriteLine("Invalid");
+    }
+    else if (ALine == BLine || BLine == CLine || ALine == CLine)
+    {
+        Console.WriteLine("Isosceles");
+    }
+    else
+    {
+        Console.WriteLine("Scalene");
+    }
+}
