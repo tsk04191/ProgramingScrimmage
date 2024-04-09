@@ -1,0 +1,4 @@
+string[] input = Console.ReadLine().Split(' ');
+int go = int.Parse(input[0]), back = int.Parse(input[1]), goal = int.Parse(input[2]);
+
+Console.WriteLine(((goal - go) % (go - back) != 0 ? ((goal - go) / (go - back)) + 1 : (goal - go) / (go - back)) + 1);
