@@ -1,0 +1,18 @@
+string[] input = Console.ReadLine().Split();
+int type = int.Parse(input[1]);
+int sum = 0, pow = 1;
+
+for (int i = 0; i < input[0].Length; i++)
+{
+    pow = (int)Math.Pow(type, input[0].Length - i - 1);
+
+    if (input[0][i] > 64)
+    {
+        sum += ((int)input[0][i] - 55) * pow;
+    }
+    else
+    {
+        sum += int.Parse(input[0][i].ToString()) * pow;
+    }
+}
+Console.WriteLine(sum);
