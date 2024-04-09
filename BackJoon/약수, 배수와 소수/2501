@@ -1,0 +1,21 @@
+string[] input = Console.ReadLine().Split();
+int num = int.Parse(input[0]), target = int.Parse(input[1]), stack = 0;
+
+for (int i = 1; i <= num; i++)
+{
+    if (num % i == 0)
+    {
+        stack++;
+    }
+
+    if (stack == target)
+    {
+        Console.WriteLine(i);
+        break;
+    }
+
+    if (i == num)
+    {
+        Console.WriteLine(0);
+    }
+}
