@@ -1,0 +1,13 @@
+int sum = int.Parse(Console.ReadLine());
+int volum = int.Parse(Console.ReadLine());
+int cs = 0;
+
+for (int i = 0; i < volum; i++)
+{
+    string[] input = Console.ReadLine().Split(' ');
+    int A = int.Parse(input[0]);
+    int B = int.Parse(input[1]);
+    cs += A * B;
+}
+
+Console.WriteLine(sum == cs ? "Yes" : "No");
