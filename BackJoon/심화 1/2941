@@ -1,0 +1,6 @@
+string s = Console.ReadLine();
+
+string rs = s.Replace("c=", "1").Replace("c-", "1").Replace("dz=", "1").Replace("d-", "1").Replace("lj", "1").Replace("nj", "1")
+    .Replace("s=", "1").Replace("z=", "1");
+
+Console.WriteLine(rs.Length);
