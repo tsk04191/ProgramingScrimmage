@@ -1,0 +1,7 @@
+string[] input = Console.ReadLine().Split(' ');
+
+double A = double.Parse(input[0]), B = double.Parse(input[1]), C = double.Parse(input[2]);
+Console.WriteLine(( A + B ) % C);
+Console.WriteLine(((A % C) + (B % C)) % C);
+Console.WriteLine((A * B) % C);
+Console.WriteLine(((A % C) * (B % C)) % C);
