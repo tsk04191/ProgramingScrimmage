@@ -1,0 +1,9 @@
+int t = int.Parse(Console.ReadLine());
+int r = 0;
+
+for(int i = 1; i < t+1; i++)
+{
+    r += i;
+}
+
+Console.WriteLine(r);
