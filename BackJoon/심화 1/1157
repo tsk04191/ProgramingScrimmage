@@ -1,0 +1,28 @@
+int[] aList = new int[26];
+string s = Console.ReadLine().ToUpper();
+
+for (int i = 0; i < 26; i++)
+{
+    aList[i] = 0;
+}
+
+for (int i = 0; i < s.Length; i++)
+{
+    char c = s[i];
+    int index = c - 'A';
+
+    aList[index]++;
+}
+
+int maxCount = aList.Max();
+int maxDouble = aList.Count(count => count == maxCount);
+
+if (maxDouble == 1)
+{
+    int value = Array.IndexOf(aList, maxCount);
+    Console.WriteLine((char)(value + 'A'));
+}
+else
+{
+    Console.WriteLine("?");
+}
