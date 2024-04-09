@@ -1,0 +1,13 @@
+TextReader reader = new StreamReader(Console.OpenStandardInput());
+TextWriter writer = new StreamWriter(Console.OpenStandardOutput());
+
+int t = int.Parse(reader.ReadLine());
+
+for (int i = 0; i < t; i++)
+{
+    string[] input = reader.ReadLine().Split(' ');
+    int A = int.Parse(input[0]), B = int.Parse(input[1]);
+    writer.WriteLine(A + B);
+}
+
+writer.Flush();
