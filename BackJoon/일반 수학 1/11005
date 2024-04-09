@@ -1,0 +1,16 @@
+string[] input = Console.ReadLine().Split(' ');
+int value = int.Parse(input[0]), type = int.Parse(input[1]);
+string r = "";
+
+while(true)
+{
+    r = (value % type > 9 ? ((char)(value % type + 55)).ToString() : (value % type).ToString()) + r;
+    value /= type;
+
+    if (value == 0)
+    {
+        break;
+    }
+}
+
+Console.WriteLine(r);
