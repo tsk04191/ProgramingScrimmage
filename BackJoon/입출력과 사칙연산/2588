@@ -1,0 +1,8 @@
+int A = int.Parse(Console.ReadLine());
+int rB = int.Parse(Console.ReadLine());
+int[] B = { rB / 100, (rB % 100) / 10, (rB % 10) };
+
+Console.WriteLine(A * B[2]);
+Console.WriteLine(A * B[1]);
+Console.WriteLine(A * B[0]);
+Console.WriteLine(A * rB);
