@@ -1,0 +1,46 @@
+float levelNum = 0, sumS = 0, sumL = 0;
+
+for (int i = 0; i < 20; i++)
+{
+    string[] s = Console.ReadLine().Split();
+    float score = float.Parse(s[1]);
+    string level = s[2];
+
+    switch (s[2])
+    {
+        case "A+":
+            levelNum = 4.5f;
+            break;
+        case "A0":
+            levelNum = 4.0f;
+            break;
+        case "B+":
+            levelNum = 3.5f;
+            break;
+        case "B0":
+            levelNum = 3.0f;
+            break;
+        case "C+":
+            levelNum = 2.5f;
+            break;
+        case "C0":
+            levelNum = 2.0f;
+            break;
+        case "D+":
+            levelNum = 1.5f;
+            break;
+        case "D0":
+            levelNum = 1.0f;
+            break;
+        case "F":
+            levelNum = 0.0f;
+            break;
+        case "P":
+            continue;
+    }
+
+    sumS += score;
+    sumL += score * levelNum;
+}
+
+Console.WriteLine(sumL / sumS);
