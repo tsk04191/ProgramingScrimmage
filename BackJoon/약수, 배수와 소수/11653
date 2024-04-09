@@ -1,0 +1,16 @@
+int num = int.Parse(Console.ReadLine());
+int time = num;
+
+for (int i = 2; i <= time; i++)
+{
+    if (num == 1)
+    {
+        break;
+    }
+
+    while (num % i == 0)
+    {
+        Console.WriteLine(i);
+        num /= i;
+    }
+}
