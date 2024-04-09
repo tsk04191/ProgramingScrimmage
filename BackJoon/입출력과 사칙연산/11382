@@ -1,0 +1,4 @@
+string[] sNum = Console.ReadLine().Split(' ');
+double A = double.Parse(sNum[0]), B = double.Parse(sNum[1]), C = double.Parse(sNum[2]);
+
+Console.WriteLine(A + B + C);
