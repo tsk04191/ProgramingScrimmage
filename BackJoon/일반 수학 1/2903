@@ -1,0 +1,2 @@
+int n = (int)Math.Pow(2, int.Parse(Console.ReadLine()));
+Console.WriteLine(2 * (2 * n) + Math.Pow(n - 1, 2));
