@@ -1,0 +1,20 @@
+int Aangle = int.Parse(Console.ReadLine());
+int Bangle = int.Parse(Console.ReadLine());
+int Cangle = int.Parse(Console.ReadLine());
+
+if (Aangle + Bangle + Cangle != 180)
+{
+    Console.WriteLine("Error");
+}
+else if (Aangle == Bangle && Aangle == Cangle && Aangle == 60)
+{
+    Console.WriteLine("Equilateral");
+}
+else if (Aangle == Bangle || Aangle == Cangle || Bangle == Cangle)
+{
+    Console.WriteLine("Isosceles");
+}
+else
+{
+    Console.WriteLine("Scalene");
+}
