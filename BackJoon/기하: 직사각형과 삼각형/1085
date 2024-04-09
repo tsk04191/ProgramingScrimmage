@@ -1,0 +1,4 @@
+string[] input = Console.ReadLine().Split();
+int x = int.Parse(input[0]), y = int.Parse(input[1]), w = int.Parse(input[2]), h = int.Parse(input[3]);
+
+Console.WriteLine(Math.Min(Math.Min(Math.Abs(w - x), x), Math.Min(Math.Abs(h - y), y)));
