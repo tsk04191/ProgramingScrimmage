@@ -1,0 +1,7 @@
+int a = int.Parse(Console.ReadLine());
+
+for (int i = 0; i < (a / 4); i++)
+{
+    Console.Write("long ");
+}
+Console.WriteLine("int");
