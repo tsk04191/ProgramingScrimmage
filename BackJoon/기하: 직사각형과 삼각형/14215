@@ -1,0 +1,19 @@
+string[] input = Console.ReadLine().Split();
+int[] Lines = { int.Parse(input[0]), int.Parse(input[1]), int.Parse(input[2]) };
+Array.Sort(Lines);
+Array.Reverse(Lines);
+
+int Scalene = -1;
+int Isosceles = Lines[1] * 2 + Lines[2];
+int Equilateral = Lines[2] * 3;
+
+for (; Lines[0] > Lines[1]; Lines[0]--)
+{
+    if (Lines[0] < Lines[1] + Lines[2])
+    {
+        Scalene = Lines[0] + Lines[1] + Lines[2];
+        break;
+    }
+}
+
+Console.WriteLine(Math.Max(Math.Max(Scalene, Isosceles), Equilateral));
