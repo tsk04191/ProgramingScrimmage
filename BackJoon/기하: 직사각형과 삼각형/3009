@@ -1,0 +1,8 @@
+string[] Adot = Console.ReadLine().Split();
+string[] Bdot = Console.ReadLine().Split();
+string[] Cdot = Console.ReadLine().Split();
+
+int Xdot = Adot[0] == Bdot[0] ? int.Parse(Cdot[0]) : (Adot[0] == Cdot[0] ? int.Parse(Bdot[0]) : int.Parse(Adot[0]));
+int Ydot = Adot[1] == Bdot[1] ? int.Parse(Cdot[1]) : (Adot[1] == Cdot[1] ? int.Parse(Bdot[1]) : int.Parse(Adot[1]));
+
+Console.WriteLine(Xdot + " " + Ydot);
