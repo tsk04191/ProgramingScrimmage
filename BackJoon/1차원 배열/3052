@@ -1,0 +1,18 @@
+int[] restList = new int[42];
+int result = 0;
+
+for (int i = 0; i < 10; i++)
+{
+    int rest = int.Parse(Console.ReadLine()) % 42;
+
+    restList[rest] = 1;
+}
+
+for (int i = 0; i < 42; i++)
+{
+    if (restList[i] == 1)
+    {
+        result++;
+    }
+}
+Console.WriteLine(result);
