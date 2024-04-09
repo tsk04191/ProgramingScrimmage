@@ -1,0 +1,43 @@
+string s = Console.ReadLine();
+int n;
+int time = 0;
+
+for (int i = 0; i < s.Length; i++)
+{
+    n = (int)((char)s[i]) - 'A';
+
+    if (n >= 22)
+    {
+        time += 10;
+    }
+    else if(n >= 19)
+    {
+        time += 9;
+    }
+    else if (n >= 15)
+    {
+        time += 8;
+    }
+    else if (n >= 12)
+    {
+        time += 7;
+    }
+    else if (n >= 9)
+    {
+        time += 6;
+    }
+    else if (n >= 6)
+    {
+        time += 5;
+    }
+    else if (n >= 3)
+    {
+        time += 4;
+    }
+    else
+    {
+        time += 3;
+    }
+}
+
+Console.WriteLine(time);
