@@ -1,0 +1,2 @@
+int s = (int)Convert.ToChar(Console.ReadLine());
+Console.WriteLine(s);
