@@ -1,0 +1,36 @@
+int t = int.Parse(Console.ReadLine());
+int count = 0;
+
+for (int i = 0; i < t; i++)
+{
+    int[] n = new int[26];
+    int last = -1;
+
+    string s = Console.ReadLine();
+
+    for (int j = 0; j < s.Length; j++)
+    {
+        char c = s[j];
+        int cnum = (int)c - 'a';
+
+        if (last != cnum)
+        {
+            if (n[cnum] == 1)
+            {
+                break;
+            }
+            else
+            {
+                last = cnum;
+                n[cnum] = 1;
+            }
+        }
+
+        if (j == s.Length - 1)
+        {
+            count++;
+        }
+    }
+}
+
+Console.WriteLine(count);
