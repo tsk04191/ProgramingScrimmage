@@ -1,0 +1,21 @@
+int n = int.Parse(Console.ReadLine());
+int EndTile = 1, Low = 1;
+
+while (true)
+{
+    int Rest = n - EndTile + 1;
+    EndTile += Low;
+
+    if (n < EndTile && Low % 2 == 0)
+    {
+        Console.WriteLine(Rest + "/" + (Low - Rest + 1));
+        break;
+    }
+    else if (n < EndTile && Low % 2 != 0)
+    {
+        Console.WriteLine((Low - Rest + 1) + "/" + Rest);
+        break;
+    }
+
+    Low++;
+}
