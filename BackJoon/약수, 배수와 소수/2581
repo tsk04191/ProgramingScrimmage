@@ -1,0 +1,39 @@
+int min = int.Parse(Console.ReadLine());
+int max = int.Parse(Console.ReadLine());
+int MinValue = Int32.MaxValue, sum = 0;
+
+for (int i = min; i <= max; i++)
+{
+    if (i == 2)
+    {
+        sum += 2;
+        MinValue = 2;
+    }
+
+    for (int j = 2; j < i; j++)
+    {
+        if (i % j == 0)
+        {
+            break;
+        }
+        
+        if (j == i - 1)
+        {
+            sum += i;
+
+            if (MinValue > i)
+            {
+                MinValue = i;
+            }
+        }
+    }
+}
+
+if (sum != 0)
+{
+    Console.WriteLine(sum + "\n" + MinValue);
+}
+else
+{
+    Console.WriteLine("-1");
+}
