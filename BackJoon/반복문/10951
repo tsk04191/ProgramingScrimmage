@@ -1,0 +1,23 @@
+        TextReader reader = new StreamReader(Console.OpenStandardInput());
+        TextWriter writer = new StreamWriter(Console.OpenStandardOutput());
+
+        while (true)
+        {
+            string input = reader.ReadLine();
+
+            if (input == null)
+            {
+                break;
+            }
+
+            string[] numbers = input.Split(' ');
+
+            int A = int.Parse(numbers[0]);
+            int B = int.Parse(numbers[1]);
+
+            int sum = A + B;
+
+            writer.WriteLine(sum);
+        }
+
+        writer.Flush();
