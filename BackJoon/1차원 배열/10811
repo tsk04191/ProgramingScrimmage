@@ -1,0 +1,36 @@
+string[] input = Console.ReadLine().Split(' ');
+int baketNum = int.Parse(input[0]), time = int.Parse(input[1]);
+int[] baket = new int[baketNum];
+int instance;
+
+for (int i = 0; i < baketNum; i++)
+{
+    baket[i] = i + 1;
+}
+
+for (int i = 0; i < time; i++)
+{
+    string[] change = Console.ReadLine().Split(' ');
+    int n = int.Parse(change[0]), m = int.Parse(change[1]);
+
+    if (m - n + 1 > 2)
+    {
+        for (int j = 0; j < (m - n + 1) / 2; j++)
+        {
+            instance = baket[n - 1 + j];
+            baket[n - 1 + j] = baket[m - 1 - j];
+            baket[m - 1 - j] = instance;
+        }
+    }
+    else
+    {
+        instance = baket[n - 1];
+        baket[n - 1] = baket[m - 1];
+        baket[m - 1] = instance;
+    }
+}
+
+for (int i = 0; i < baketNum; i++)
+{
+    Console.Write(baket[i] + " ");
+}
