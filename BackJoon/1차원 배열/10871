@@ -1,0 +1,11 @@
+string[] inputA = Console.ReadLine().Split(' ');
+string[] inputB = Console.ReadLine().Split(' ');
+int t = int.Parse(inputA[0]), l = int.Parse(inputA[1]);
+
+for (int i = 0; i < t; i++)
+{
+    if (l > int.Parse(inputB[i]))
+    {
+        Console.Write(inputB[i] + " ");
+    }
+}
