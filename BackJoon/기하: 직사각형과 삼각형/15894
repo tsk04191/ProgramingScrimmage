@@ -1,0 +1,1 @@
+Console.WriteLine(double.Parse(Console.ReadLine()) * 4);
