@@ -1,0 +1,17 @@
+int t = int.Parse(Console.ReadLine());
+string[] input = Console.ReadLine().Split(' ');
+int max = int.Parse(input[0]), min = int.Parse(input[0]);
+
+for(int i = 0; i < t; i++)
+{
+    if (int.Parse(input[i]) > max)
+    {
+        max = int.Parse(input[i]);
+    }
+    else if (int.Parse(input[i]) < min)
+    {
+        min = int.Parse(input[i]);
+    }
+}
+
+Console.WriteLine(min + " " + max);
