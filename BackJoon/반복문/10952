@@ -1,0 +1,10 @@
+while(true)
+{
+    string[] input = Console.ReadLine().Split(' ');
+    int A = int.Parse(input[0]), B = int.Parse(input[1]);
+    if (A == 0 &&  B == 0)
+    {
+        break;
+    }
+    Console.WriteLine(A + B);
+}
