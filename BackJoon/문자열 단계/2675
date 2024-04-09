@@ -1,0 +1,18 @@
+int t = int.Parse(Console.ReadLine());
+
+for(int i = 0; i < t; i++)
+{
+    string[] s = Console.ReadLine().Split(' ');
+    int rt = int.Parse(s[0]);
+
+    for(int m  = 0; m < s[1].Length; m++)
+    {
+        for (int n = 0; n < rt; n++)
+        {
+            char c = s[1][m];
+            Console.Write(c);
+        }
+    }
+
+    Console.Write('\n');
+}
