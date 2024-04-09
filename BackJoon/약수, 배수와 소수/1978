@@ -1,0 +1,24 @@
+int time = int.Parse(Console.ReadLine()), count = time;
+string[] input = Console.ReadLine().Split();
+
+for (int i = 0; i < time; i++)
+{
+    int num = int.Parse(input[i]);
+
+    if (num == 1)
+    {
+        count--;
+        continue;
+    }
+
+    for (int j = 2; j < num; j++)
+    {
+        if (num % j == 0)
+        {
+            count--;
+            break;
+        }
+    }
+}
+
+Console.WriteLine(count);
