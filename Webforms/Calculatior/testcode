@@ -1,0 +1,163 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace CalculatiorTest
+{
+    public enum Process
+    {
+        none,
+        plus,
+        minus,
+        multi,
+        div
+    }
+
+    public partial class Form1 : Form
+    {
+        string firstnum = string.Empty, secnum = string.Empty;
+        bool donefirst = false, usedot = false;
+        Process process;
+
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void display_Show()
+        {
+            if (!donefirst)
+            {
+                display.Text = firstnum;
+            }
+            else
+            {
+                display.Text = secnum;
+            }
+        }
+
+        private void btNum_Click(object sender, EventArgs e)
+        {
+            Button bt = (Button)sender;
+
+            if (!donefirst)
+            {
+                if (bt.Text == "0" && firstnum == string.Empty)
+                {
+                    return;
+                }
+                firstnum += bt.Text;
+            }
+            else
+            {
+                if (bt.Text == "0" && secnum == string.Empty)
+                {
+                    return;
+                }
+                secnum += bt.Text;
+            }
+
+            display_Show();
+        }
+
+        private void btPlus_Click(object sender, EventArgs e)
+        {
+            display.Text = "0";
+            donefirst = true;
+            usedot = false;
+            process = Process.plus;
+        }
+
+        private void btMinus_Click(object sender, EventArgs e)
+        {
+            display.Text = "0";
+            donefirst = true;
+            usedot = false;
+            process = Process.minus;
+        }
+
+        private void btMulti_Click(object sender, EventArgs e)
+        {
+            display.Text = "0";
+            donefirst = true;
+            usedot = false;
+            process = Process.multi;
+        }
+
+        private void btDiv_Click(object sender, EventArgs e)
+        {
+            display.Text = "0";
+            donefirst = true;
+            usedot = false;
+            process = Process.div;
+        }
+
+        private void btAC_Click(object sender, EventArgs e)
+        {
+            firstnum = string.Empty;
+            secnum = string.Empty;
+            donefirst = false;
+            usedot = false;
+
+            display_Show();
+            display.Text = "0";
+        }
+
+        private void btEnter_Click(object sender, EventArgs e)
+        {
+            switch (process)
+            {
+                case Process.plus:
+                    display.Text = (double.Parse(firstnum) + double.Parse(secnum)).ToString();
+                    break;
+
+                case Process.minus:
+                    display.Text = (double.Parse(firstnum) - double.Parse(secnum)).ToString();
+                    break;
+
+                case Process.multi:
+                    display.Text = (double.Parse(firstnum) * double.Parse(secnum)).ToString();
+                    break;
+
+                case Process.div:
+                    display.Text = (double.Parse(firstnum) / double.Parse(secnum)).ToString();
+                    break;
+            }
+        }
+
+        private void btDot_Click(object sender, EventArgs e)
+        {
+            if (usedot)
+            {
+                return;
+            }
+
+            if (!donefirst)
+            {
+                if (firstnum == string.Empty)
+                {
+                    firstnum += "0";
+                }
+                firstnum += ".";
+            }
+            else
+            {
+                if (secnum == string.Empty)
+                {
+                    secnum += "0";
+                }
+                secnum += ".";
+            }
+
+            usedot = true;
+
+            display_Show();
+        }
+    }
+}
