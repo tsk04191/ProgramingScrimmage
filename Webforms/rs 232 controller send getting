@@ -14,10 +14,11 @@ namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
     {
-        Thread threadsender;
+        Thread threadsender, threadreciver;
 
         bool threaddoing = false;
         byte[] commands = new byte[14];
+        byte[] requestor = { 0x02, 0x46, 0x31, 0x03 };
         Button[] buttons = new Button[32];
 
         const byte STX = 0x02, CMD1 = 0x46, CMD2 = 0x30, ETX = 0x03;
@@ -66,45 +67,142 @@ namespace WindowsFormsApplication1
                 Port1.Parity = Parity.None;
                 //이전 명령어와 다음 명령어 텀 설정
                 Port1.WriteTimeout = 10;
+                Port1.ReadTimeout = 10;
+                //값을 받기 위한 구문
+                Port1.DataReceived += new SerialDataReceivedEventHandler(Port1_DataReceived);
 
                 //위에서 설정한 값으로 포트 오픈
                 Port1.Open();
 
+                //통신 동안 설정 값이 바뀌지 않게 고정
                 ComboBoxPort.Enabled = false;
                 ComboBoxInOut.Enabled = false;
 
-                ButtonConnect.Text = "Disconnect";
-                ButtonConnect.BackColor = Color.Green;
+                //버튼 표시 변경
+                btConnect.Text = "Disconnect";
+                btConnect.BackColor = Color.PaleGreen;
 
-                //명령어 송신 쓰레드 시작
-                CommandSender();
+                if (ComboBoxInOut.SelectedItem.ToString() == "Input")
+                {
+                    //상태 수신 쓰레드 시작
+                    CommandReciver();
+                }
+                else if (ComboBoxInOut.SelectedItem.ToString() == "Output")
+                {
+                    //명령어 송신 쓰레드 시작
+                    CommandSender();
+                }
             }
             else
             {
                 //쓰레드 탈출을 위한 bool 값 제어
                 threaddoing = false;
 
-                Port1.Close();
-
+                //다시 설정 변경할 수 있도록 사용 가능으로 변경
                 ComboBoxPort.Enabled = true;
                 ComboBoxInOut.Enabled = true;
 
-                ButtonConnect.Text = "Connect";
-                ButtonConnect.BackColor = Color.White;
+                //버튼 표시 변경
+                btConnect.Text = "Connect";
+                btConnect.BackColor = Color.Gainsboro;
+
+                //통신 종료
+                Port1.Close();
+            }
+        }
+
+        private void Port1_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            //쓰레드 충돌 방지
+            this.Invoke(new EventHandler(PortReciver));
+        }
+
+        private void PortReciver(object s, EventArgs e)
+        {
+            //수신 값의 길이
+            int bytelength = Port1.BytesToRead;
+            //수신 값을 저장할 배열을 길이 만큼 생성
+            byte[] data = new byte[bytelength];
+            //data 배열에 수신된 값 저장
+            Port1.Read(data, 0, bytelength);
+
+            //받은 신호의 길이 12로 규격에 맞는 값을 받을경우 해석
+            if (data.Length == 12)
+            {
+                //받은 값 중에서 신호를 송출하는 구간만 해석하는 함수로 전달
+                ButtonSelector(System.Text.Encoding.UTF8.GetString(data).Substring(1, 8));
+            }
+        }
+
+        private void ButtonSelector(string data)
+        {
+            for (int i = 0; i < data.Length; i++)
+            {
+                //순서가 온 값을 정수로 변경
+                int num = int.Parse(data[i].ToString(), System.Globalization.NumberStyles.HexNumber);
+                //제일 뒤가 1번 부터기때문에 순서 역순으로 계산
+                int time = data.Length - i - 1;
+                //마지막에 한번에 버튼 색상을 변경하기 위해서 배치, 기본 값은 Moccasin
+                Color[] backcolor = new Color[] { Color.Moccasin, Color.Moccasin, Color.Moccasin, Color.Moccasin };
+
+                //첫번째 신호가 1이기때문에 홀수일 경우 무조껀 첫번째에서 제외가능
+                if (num % 2 == 1)
+                {
+                    num--;
+                    backcolor[0] = Color.PaleGreen;
+                }
+                else
+                {
+                    //그 외의 신호의 경우 큰값부터 차례로 제거하면서 색상 변경
+                    while (num > 0)
+                    {
+                        if (num >= 8)
+                        {
+                            num -= 8;
+                            backcolor[3] = Color.PaleGreen;
+                        }
+                        if (num >= 4)
+                        {
+                            num -= 4;
+                            backcolor[2] = Color.PaleGreen;
+                        }
+                        if (num >= 2)
+                        {
+                            num -= 2;
+                            backcolor[1] = Color.PaleGreen;
+                        }
+                    }
+                }
+
+                //신호에 맞게 적용된 색상 표기
+                buttons[(4 * time) + 0].BackColor = backcolor[0];
+                buttons[(4 * time) + 1].BackColor = backcolor[1];
+                buttons[(4 * time) + 2].BackColor = backcolor[2];
+                buttons[(4 * time) + 3].BackColor = backcolor[3];
             }
         }
 
         private void CommandSender()
         {
-            threadsender = new Thread(ThreadStarter);
+            threadsender = new Thread(ThreadSender);
             threadsender.IsBackground = true;
+            //쓰레드 반복을 위한 bool 값 제어
             threaddoing = true;
 
-            //쓰레드 반복을 위한 bool 값 제어
             threadsender.Start();
         }
 
-        private void ThreadStarter()
+        private void CommandReciver()
+        {
+            threadreciver = new Thread(ThreadReciver);
+            threadreciver.IsBackground = true;
+            //쓰레드 반복을 위한 bool 값 제어
+            threaddoing = true;
+
+            threadreciver.Start();
+        }
+
+        private void ThreadSender()
         {
             while (threaddoing)
             {
@@ -112,11 +210,24 @@ namespace WindowsFormsApplication1
                 Port1.Write(commands, 0, commands.Length);
 
                 //다음 송신까지 텀
-                Thread.Sleep(100);
+                Thread.Sleep(150);
             }
-
             //threaddoing이 false 이 될 경우 탈출해서 쓰레드 종료
             threadsender.Abort();
+        }
+
+        private void ThreadReciver()
+        {
+            while (threaddoing)
+            {
+                //저장된 신호 commands 배열 송신
+                Port1.Write(requestor, 0, requestor.Length);
+
+                //다음 송신까지 텀
+                Thread.Sleep(150);
+            }
+            //threaddoing이 false 이 될 경우 탈출해서 쓰레드 종료
+            //threadsender.Abort();
         }
 
         private void BtOutput_Click(object sender, EventArgs e)
@@ -212,6 +323,7 @@ namespace WindowsFormsApplication1
                 }
             }
 
+            //위에서 수정된 iDATA 값을 이용해 CRC 값 입력
             CRCSetter();
             CommandSetter();
         }
@@ -220,16 +332,39 @@ namespace WindowsFormsApplication1
         {
             ComboBox cb = (ComboBox)sender;
 
+            Button[] bts = new Button[]
+                { bt1, bt2, bt3, bt4, bt5, bt6, bt7, bt8, bt9, bt10,
+                    bt11, bt12, bt13, bt14, bt15, bt16, bt17, bt18, bt19, bt20,
+                    bt21, bt22, bt23, bt24, bt25, bt26, bt27, bt28, bt29, bt30,
+                    bt31, bt32
+                };
+
             //콤보박스 inout 에 따라 모드 변경
             if (cb.SelectedItem.ToString() == "Output")
             {
                 tb0116.Text = "Output 1 - 16";
                 tb1732.Text = "Output 17 - 32";
+
+                foreach (Button bt in bts)
+                {
+                    bt.Click += BtOutput_Click;
+                }
+
+                btALLON.Click += BtOutputALL_Click;
+                btALLOFF.Click += BtOutputALL_Click;
             }
             else if (cb.SelectedItem.ToString() == "Input")
             {
                 tb0116.Text = "Intput 1 - 16";
                 tb1732.Text = "Intput 17 - 32";
+
+                foreach (Button bt in bts)
+                {
+                    bt.Click -= BtOutput_Click;
+                }
+
+                btALLON.Click -= BtOutputALL_Click;
+                btALLOFF.Click -= BtOutputALL_Click;
             }
         }
     }
