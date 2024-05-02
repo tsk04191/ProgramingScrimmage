@@ -18,10 +18,11 @@ namespace WindowsFormsApplication1
 
         bool threaddoing = false;
         byte[] commands = new byte[14];
-        const byte STX = 0x02, CMD1 = 0x46, CMD2 = 0x30, ETX = 0x03;
-        int[] iDATA1 = { 0, 0 }, iDATA2 = { 0, 0 }, iDATA3 = { 0, 0 }, iDATA4 = { 0, 0 }, iCRC = { 0, 0 };
-        byte[] DATA1 = { 0x30, 0x30 }, DATA2 = { 0x30, 0x30 }, DATA3 = { 0x30, 0x30 }, DATA4 = { 0x30, 0x30 }, CRC = { 0x30, 0x30 };
         Button[] buttons = new Button[32];
+
+        const byte STX = 0x02, CMD1 = 0x46, CMD2 = 0x30, ETX = 0x03;
+        int[] iDATA = { 0, 0, 0, 0, 0, 0, 0, 0 }, iCRC = { 0, 0 }, outdata = { 1, 2, 4, 8 };
+        byte[] DATA = { 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30 }, CRC = { 0x30, 0x30 };
 
         public Form1()
         {
@@ -41,6 +42,10 @@ namespace WindowsFormsApplication1
             }
             CommandSetter();
 
+            //In Out 콤보박스 기본 out 모드
+            ComboBoxInOut.SelectedIndex = 1;
+
+            //각 신호를 담당할 버튼을 목록 변수화
             buttons = new Button[]
             { bt1, bt2, bt3, bt4, bt5, bt6, bt7, bt8, bt9, bt10,
                 bt11, bt12, bt13, bt14, bt15, bt16, bt17, bt18, bt19, bt20,
@@ -59,58 +64,34 @@ namespace WindowsFormsApplication1
                 Port1.DataBits = 8;
                 Port1.StopBits = StopBits.One;
                 Port1.Parity = Parity.None;
+                //이전 명령어와 다음 명령어 텀 설정
                 Port1.WriteTimeout = 10;
 
                 //위에서 설정한 값으로 포트 오픈
                 Port1.Open();
 
+                ComboBoxPort.Enabled = false;
+                ComboBoxInOut.Enabled = false;
+
                 ButtonConnect.Text = "Disconnect";
                 ButtonConnect.BackColor = Color.Green;
 
+                //명령어 송신 쓰레드 시작
                 CommandSender();
             }
             else
             {
+                //쓰레드 탈출을 위한 bool 값 제어
                 threaddoing = false;
+
                 Port1.Close();
+
+                ComboBoxPort.Enabled = true;
+                ComboBoxInOut.Enabled = true;
+
                 ButtonConnect.Text = "Connect";
                 ButtonConnect.BackColor = Color.White;
             }
-        }
-
-        private void CommandSetter()
-        {
-            commands[0] = STX;
-            commands[1] = CMD1;
-            commands[2] = CMD2;
-
-            DATA4[1] = Convert.ToByte(iDATA4[1].ToString("X")[0]);
-            DATA4[0] = Convert.ToByte(iDATA4[0].ToString("X")[0]);
-            commands[10] = DATA4[1];
-            commands[9] = DATA4[0];
-
-            DATA3[1] = Convert.ToByte(iDATA3[1].ToString("X")[0]);
-            DATA3[0] = Convert.ToByte(iDATA3[0].ToString("X")[0]);
-            commands[8] = DATA3[1];
-            commands[7] = DATA3[0];
-
-            DATA2[1] = Convert.ToByte(iDATA2[1].ToString("X")[0]);
-            DATA2[0] = Convert.ToByte(iDATA2[0].ToString("X")[0]);
-            commands[6] = DATA2[1];
-            commands[5] = DATA2[0];
-
-            DATA1[1] = Convert.ToByte(iDATA1[1].ToString("X")[0]);
-            DATA1[0] = Convert.ToByte(iDATA1[0].ToString("X")[0]);
-            commands[4] = DATA1[1];
-            commands[3] = DATA1[0];
-
-            CRCSetter();
-            CRC[1] = Convert.ToByte(iCRC[1].ToString("X")[0]);
-            CRC[0] = Convert.ToByte(iCRC[0].ToString("X")[0]);
-            commands[11] = CRC[0];
-            commands[12] = CRC[1];
-
-            commands[13] = ETX;
         }
 
         private void CommandSender()
@@ -118,6 +99,8 @@ namespace WindowsFormsApplication1
             threadsender = new Thread(ThreadStarter);
             threadsender.IsBackground = true;
             threaddoing = true;
+
+            //쓰레드 반복을 위한 bool 값 제어
             threadsender.Start();
         }
 
@@ -125,169 +108,129 @@ namespace WindowsFormsApplication1
         {
             while (threaddoing)
             {
+                //저장된 신호 commands 배열 송신
                 Port1.Write(commands, 0, commands.Length);
 
+                //다음 송신까지 텀
                 Thread.Sleep(100);
             }
 
+            //threaddoing이 false 이 될 경우 탈출해서 쓰레드 종료
             threadsender.Abort();
+        }
+
+        private void BtOutput_Click(object sender, EventArgs e)
+        {
+            //누른 버튼을 인식해 몇 번째 버튼인지 확인
+            Button bt = (Button)sender;
+            int target = Array.IndexOf(buttons, bt);
+
+            //버튼의 배경색을 인식해 on off 조절
+            if (bt.BackColor == Color.Moccasin)
+            {
+                iDATA[target / 4] += outdata[target % 4];
+                bt.BackColor = Color.PaleGreen;
+            }
+            else
+            {
+                iDATA[target / 4] -= outdata[target % 4];
+                bt.BackColor = Color.Moccasin;
+            }
+
+            //위 코드로 인해 바뀐 iDATA 값을 명령어에 적용
+            CommandSetter();
+        }
+
+        private void CommandSetter()
+        {
+            //iDATA에 저장된 현제 on off 된 데이터값을 byte로 변환해서 DATA에 저장
+            for (int i = 0; i < iDATA.Length; i++)
+            {
+                DATA[i] = Convert.ToByte(iDATA[i].ToString("X")[0]);
+            }
+
+            commands[0] = STX;
+            commands[1] = CMD1;
+            commands[2] = CMD2;
+
+            commands[3] = DATA[7];
+            commands[4] = DATA[6];
+            commands[5] = DATA[5];
+            commands[6] = DATA[4];
+            commands[7] = DATA[3];
+            commands[8] = DATA[2];
+            commands[9] = DATA[1];
+            commands[10] = DATA[0];
+
+            CRCSetter();
+            commands[11] = CRC[1];
+            commands[12] = CRC[0];
+
+            commands[13] = ETX;
         }
 
         private void CRCSetter()
         {
-            iCRC[1] = iDATA1[1] + iDATA2[1] + iDATA3[1] + iDATA4[1];
+            //CRC 값은 각 DATA 그룹의 MSB, LSB 값을 더하여 위치, LSB의 값이 16이 넘어 다음 단위로 갈 경우 MSB 에 합산
+            iCRC[0] = iDATA[0] + iDATA[2] + iDATA[4] + iDATA[6];
+            int up = iCRC[0] / 16;
+            iCRC[0] %= 16;
 
-            int up = iCRC[1] / 16;
+            iCRC[1] = iDATA[1] + iDATA[3] + iDATA[5] + iDATA[7] + up;
             iCRC[1] %= 16;
 
-            iCRC[0] = iDATA1[0] + iDATA2[0] + iDATA3[0] + iDATA4[0] + up;
-
-            iCRC[0] %= 16;
+            CRC[1] = Convert.ToByte(iCRC[1].ToString("X")[0]);
+            CRC[0] = Convert.ToByte(iCRC[0].ToString("X")[0]);
         }
 
-        private void ButtonALL_Click(object sender, EventArgs e)
+        private void BtOutputALL_Click(object sender, EventArgs e)
         {
-            var button = (Button)sender;
+            //버튼 이름을 미리 지정해 on off 인식하여 iDATA 값을 전부 15, 0 으로 조절하여 작동
+            //개별 작동시 버튼 색을 인식하여 on off 하기 때문에 배경 색도 조절
+            if ((Button)sender == btALLON)
+            {
+                foreach (Button bt in buttons)
+                {
+                    bt.BackColor = Color.PaleGreen;
+                }
 
-            if (button.Tag.ToString() == "1")
-            {
-                foreach (Button b in buttons)
+                for (int i = 0; i < iDATA.Length; i++)
                 {
-                    if (b.BackColor == Color.Moccasin)
-                    {
-                        b.PerformClick();
-                    }
+                    iDATA[i] = 15;
                 }
             }
-            else
+            else if ((Button)sender == btALLOFF)
             {
-                foreach (Button b in buttons)
+                foreach (Button bt in buttons)
                 {
-                    if (b.BackColor == Color.PaleGreen)
-                    {
-                        b.PerformClick();
-                    }
+                    bt.BackColor = Color.Moccasin;
                 }
-            }
-        }
 
-
-
-        private void ButtonCon_Click(object sender, EventArgs e)
-        {
-            var button = (Button)sender;
-
-            if (int.Parse(button.Text) <= 4)
-            {
-                if (button.BackColor == Color.Moccasin)
+                for (int i = 0; i < iDATA.Length; i++)
                 {
-                    iDATA4[1] += int.Parse(button.Tag.ToString());
-                    button.BackColor = Color.PaleGreen;
-                }
-                else
-                {
-                    iDATA4[1] -= int.Parse(button.Tag.ToString());
-                    button.BackColor = Color.Moccasin;
-                }
-            }
-            else if (int.Parse(button.Text) <= 8)
-            {
-                if (button.BackColor == Color.Moccasin)
-                {
-                    iDATA4[0] += int.Parse(button.Tag.ToString());
-                    button.BackColor = Color.PaleGreen;
-                }
-                else
-                {
-                    iDATA4[0] -= int.Parse(button.Tag.ToString());
-                    button.BackColor = Color.Moccasin;
-                }
-            }
-            else if (int.Parse(button.Text) <= 12)
-            {
-                if (button.BackColor == Color.Moccasin)
-                {
-                    iDATA3[1] += int.Parse(button.Tag.ToString());
-                    button.BackColor = Color.PaleGreen;
-                }
-                else
-                {
-                    iDATA3[1] -= int.Parse(button.Tag.ToString());
-                    button.BackColor = Color.Moccasin;
-                }
-            }
-            else if (int.Parse(button.Text) <= 16)
-            {
-                if (button.BackColor == Color.Moccasin)
-                {
-                    iDATA3[0] += int.Parse(button.Tag.ToString());
-                    button.BackColor = Color.PaleGreen;
-                }
-                else
-                {
-                    iDATA3[0] -= int.Parse(button.Tag.ToString());
-                    button.BackColor = Color.Moccasin;
-                }
-            }
-            else if (int.Parse(button.Text) <= 20)
-            {
-                if (button.BackColor == Color.Moccasin)
-                {
-                    iDATA2[1] += int.Parse(button.Tag.ToString());
-                    button.BackColor = Color.PaleGreen;
-                }
-                else
-                {
-                    iDATA2[1] -= int.Parse(button.Tag.ToString());
-                    button.BackColor = Color.Moccasin;
-                }
-            }
-            else if (int.Parse(button.Text) <= 24)
-            {
-                if (button.BackColor == Color.Moccasin)
-                {
-                    iDATA2[0] += int.Parse(button.Tag.ToString());
-                    button.BackColor = Color.PaleGreen;
-                }
-                else
-                {
-                    iDATA2[0] -= int.Parse(button.Tag.ToString());
-                    button.BackColor = Color.Moccasin;
-                }
-            }
-            else if (int.Parse(button.Text) <= 28)
-            {
-                if (button.BackColor == Color.Moccasin)
-                {
-                    iDATA1[1] += int.Parse(button.Tag.ToString());
-                    button.BackColor = Color.PaleGreen;
-                }
-                else
-                {
-                    iDATA1[1] -= int.Parse(button.Tag.ToString());
-                    button.BackColor = Color.Moccasin;
-                }
-            }
-            else if (int.Parse(button.Text) <= 32)
-            {
-                if (button.BackColor == Color.Moccasin)
-                {
-                    iDATA1[0] += int.Parse(button.Tag.ToString());
-                    button.BackColor = Color.PaleGreen;
-                }
-                else
-                {
-                    iDATA1[0] -= int.Parse(button.Tag.ToString());
-                    button.BackColor = Color.Moccasin;
+                    iDATA[i] = 0;
                 }
             }
 
+            CRCSetter();
             CommandSetter();
         }
 
         private void ComboBoxInOut_SelectedIndexChanged(object sender, EventArgs e)
         {
+            ComboBox cb = (ComboBox)sender;
 
+            //콤보박스 inout 에 따라 모드 변경
+            if (cb.SelectedItem.ToString() == "Output")
+            {
+                tb0116.Text = "Output 1 - 16";
+                tb1732.Text = "Output 17 - 32";
+            }
+            else if (cb.SelectedItem.ToString() == "Input")
+            {
+                tb0116.Text = "Intput 1 - 16";
+                tb1732.Text = "Intput 17 - 32";
+            }
         }
     }
 }
