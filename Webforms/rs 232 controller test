@@ -1,0 +1,293 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.IO.Ports;
+using System.Threading;
+
+namespace WindowsFormsApplication1
+{
+    public partial class Form1 : Form
+    {
+        Thread threadsender;
+
+        bool threaddoing = false;
+        byte[] commands = new byte[14];
+        const byte STX = 0x02, CMD1 = 0x46, CMD2 = 0x30, ETX = 0x03;
+        int[] iDATA1 = { 0, 0 }, iDATA2 = { 0, 0 }, iDATA3 = { 0, 0 }, iDATA4 = { 0, 0 }, iCRC = { 0, 0 };
+        byte[] DATA1 = { 0x30, 0x30 }, DATA2 = { 0x30, 0x30 }, DATA3 = { 0x30, 0x30 }, DATA4 = { 0x30, 0x30 }, CRC = { 0x30, 0x30 };
+        Button[] buttons = new Button[32];
+
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            //연결된 포트 이름들 배열 저장
+            string[] ports = SerialPort.GetPortNames();
+
+            //저장된 배열값을 콤보박스에 저장 및 자동으로 첫번째 할당
+            ComboBoxPort.Items.AddRange(ports);
+            if (ComboBoxPort.Items.Count > 0)
+            {
+                ComboBoxPort.SelectedIndex = 0;
+            }
+            CommandSetter();
+
+            buttons = new Button[]
+            { bt1, bt2, bt3, bt4, bt5, bt6, bt7, bt8, bt9, bt10,
+                bt11, bt12, bt13, bt14, bt15, bt16, bt17, bt18, bt19, bt20,
+                bt21, bt22, bt23, bt24, bt25, bt26, bt27, bt28, bt29, bt30,
+                bt31, bt32
+            };
+        }
+
+        private void ButtonConnect_Click(object sender, EventArgs e)
+        {
+            if (!Port1.IsOpen)
+            {
+                //콤보박스로 설정된 포트와 레이트로 연결, 그 외의 값은 고정값으로 지정
+                Port1.PortName = ComboBoxPort.SelectedItem.ToString();
+                Port1.BaudRate = 115200;
+                Port1.DataBits = 8;
+                Port1.StopBits = StopBits.One;
+                Port1.Parity = Parity.None;
+                Port1.WriteTimeout = 10;
+
+                //위에서 설정한 값으로 포트 오픈
+                Port1.Open();
+
+                ButtonConnect.Text = "Disconnect";
+                ButtonConnect.BackColor = Color.Green;
+
+                CommandSender();
+            }
+            else
+            {
+                threaddoing = false;
+                Port1.Close();
+                ButtonConnect.Text = "Connect";
+                ButtonConnect.BackColor = Color.White;
+            }
+        }
+
+        private void CommandSetter()
+        {
+            commands[0] = STX;
+            commands[1] = CMD1;
+            commands[2] = CMD2;
+
+            DATA4[1] = Convert.ToByte(iDATA4[1].ToString("X")[0]);
+            DATA4[0] = Convert.ToByte(iDATA4[0].ToString("X")[0]);
+            commands[10] = DATA4[1];
+            commands[9] = DATA4[0];
+
+            DATA3[1] = Convert.ToByte(iDATA3[1].ToString("X")[0]);
+            DATA3[0] = Convert.ToByte(iDATA3[0].ToString("X")[0]);
+            commands[8] = DATA3[1];
+            commands[7] = DATA3[0];
+
+            DATA2[1] = Convert.ToByte(iDATA2[1].ToString("X")[0]);
+            DATA2[0] = Convert.ToByte(iDATA2[0].ToString("X")[0]);
+            commands[6] = DATA2[1];
+            commands[5] = DATA2[0];
+
+            DATA1[1] = Convert.ToByte(iDATA1[1].ToString("X")[0]);
+            DATA1[0] = Convert.ToByte(iDATA1[0].ToString("X")[0]);
+            commands[4] = DATA1[1];
+            commands[3] = DATA1[0];
+
+            CRCSetter();
+            CRC[1] = Convert.ToByte(iCRC[1].ToString("X")[0]);
+            CRC[0] = Convert.ToByte(iCRC[0].ToString("X")[0]);
+            commands[11] = CRC[0];
+            commands[12] = CRC[1];
+
+            commands[13] = ETX;
+        }
+
+        private void CommandSender()
+        {
+            threadsender = new Thread(ThreadStarter);
+            threadsender.IsBackground = true;
+            threaddoing = true;
+            threadsender.Start();
+        }
+
+        private void ThreadStarter()
+        {
+            while (threaddoing)
+            {
+                Port1.Write(commands, 0, commands.Length);
+
+                Thread.Sleep(100);
+            }
+
+            threadsender.Abort();
+        }
+
+        private void CRCSetter()
+        {
+            iCRC[1] = iDATA1[1] + iDATA2[1] + iDATA3[1] + iDATA4[1];
+
+            int up = iCRC[1] / 16;
+            iCRC[1] %= 16;
+
+            iCRC[0] = iDATA1[0] + iDATA2[0] + iDATA3[0] + iDATA4[0] + up;
+
+            iCRC[0] %= 16;
+        }
+
+        private void ButtonALL_Click(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+
+            if (button.Tag.ToString() == "1")
+            {
+                foreach (Button b in buttons)
+                {
+                    if (b.BackColor == Color.Moccasin)
+                    {
+                        b.PerformClick();
+                    }
+                }
+            }
+            else
+            {
+                foreach (Button b in buttons)
+                {
+                    if (b.BackColor == Color.PaleGreen)
+                    {
+                        b.PerformClick();
+                    }
+                }
+            }
+        }
+
+
+
+        private void ButtonCon_Click(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+
+            if (int.Parse(button.Text) <= 4)
+            {
+                if (button.BackColor == Color.Moccasin)
+                {
+                    iDATA4[1] += int.Parse(button.Tag.ToString());
+                    button.BackColor = Color.PaleGreen;
+                }
+                else
+                {
+                    iDATA4[1] -= int.Parse(button.Tag.ToString());
+                    button.BackColor = Color.Moccasin;
+                }
+            }
+            else if (int.Parse(button.Text) <= 8)
+            {
+                if (button.BackColor == Color.Moccasin)
+                {
+                    iDATA4[0] += int.Parse(button.Tag.ToString());
+                    button.BackColor = Color.PaleGreen;
+                }
+                else
+                {
+                    iDATA4[0] -= int.Parse(button.Tag.ToString());
+                    button.BackColor = Color.Moccasin;
+                }
+            }
+            else if (int.Parse(button.Text) <= 12)
+            {
+                if (button.BackColor == Color.Moccasin)
+                {
+                    iDATA3[1] += int.Parse(button.Tag.ToString());
+                    button.BackColor = Color.PaleGreen;
+                }
+                else
+                {
+                    iDATA3[1] -= int.Parse(button.Tag.ToString());
+                    button.BackColor = Color.Moccasin;
+                }
+            }
+            else if (int.Parse(button.Text) <= 16)
+            {
+                if (button.BackColor == Color.Moccasin)
+                {
+                    iDATA3[0] += int.Parse(button.Tag.ToString());
+                    button.BackColor = Color.PaleGreen;
+                }
+                else
+                {
+                    iDATA3[0] -= int.Parse(button.Tag.ToString());
+                    button.BackColor = Color.Moccasin;
+                }
+            }
+            else if (int.Parse(button.Text) <= 20)
+            {
+                if (button.BackColor == Color.Moccasin)
+                {
+                    iDATA2[1] += int.Parse(button.Tag.ToString());
+                    button.BackColor = Color.PaleGreen;
+                }
+                else
+                {
+                    iDATA2[1] -= int.Parse(button.Tag.ToString());
+                    button.BackColor = Color.Moccasin;
+                }
+            }
+            else if (int.Parse(button.Text) <= 24)
+            {
+                if (button.BackColor == Color.Moccasin)
+                {
+                    iDATA2[0] += int.Parse(button.Tag.ToString());
+                    button.BackColor = Color.PaleGreen;
+                }
+                else
+                {
+                    iDATA2[0] -= int.Parse(button.Tag.ToString());
+                    button.BackColor = Color.Moccasin;
+                }
+            }
+            else if (int.Parse(button.Text) <= 28)
+            {
+                if (button.BackColor == Color.Moccasin)
+                {
+                    iDATA1[1] += int.Parse(button.Tag.ToString());
+                    button.BackColor = Color.PaleGreen;
+                }
+                else
+                {
+                    iDATA1[1] -= int.Parse(button.Tag.ToString());
+                    button.BackColor = Color.Moccasin;
+                }
+            }
+            else if (int.Parse(button.Text) <= 32)
+            {
+                if (button.BackColor == Color.Moccasin)
+                {
+                    iDATA1[0] += int.Parse(button.Tag.ToString());
+                    button.BackColor = Color.PaleGreen;
+                }
+                else
+                {
+                    iDATA1[0] -= int.Parse(button.Tag.ToString());
+                    button.BackColor = Color.Moccasin;
+                }
+            }
+
+            CommandSetter();
+        }
+
+        private void ComboBoxInOut_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+    }
+}
